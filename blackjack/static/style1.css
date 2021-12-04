@@ -1,0 +1,76 @@
+body
+{
+    background-color: #E5E5E5;
+}
+
+.blackjack_table_words_big
+{
+    background-color: #2F2A2A;
+    color: #CE3D32;
+    margin-bottom: 2rem;
+    font-size: 5rem;
+    font-weight: 400;
+    line-height: 1;
+    margin: 0;
+    text-align: center;
+}
+
+.blackjack_table_words_small
+{
+    color: black;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1;
+    margin: 0;
+    text-align: center;
+}
+
+.center
+{
+    text-align: center;
+}
+
+.selectbox
+{
+    color: #828282;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    border-radius: 5.43px;
+}
+
+.selectbox_small
+{
+    color: #2F2A2A;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    border-radius: 5.43px;
+}
+
+.card_input
+{
+    width: 60px;
+    height: 90px;
+    text-align: center;
+}
+
+.rule_table
+{
+    color: #2F2A2A;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1;
+    margin: 0;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: separate;
+    border-spacing: 50px 0;
+}
