@@ -55,28 +55,51 @@ def das_incl_submit():
         card2 = request.form.get("card_input2")
         total = card1 + card2
 
-        # if two cards are the both As
-        if card1 == 'A' and card2 == 'A':
-            # result = stand
-            return decision("stand")
+        # if two cards are the same
+        if card1 == card2:
+
+            # execute search in split table
+            result = db.execute("SELECT * FROM split_das WHERE LeftCard = ? AND DealerCard = ?", card1, dealer)
+            
+            if result["Decision"] == 'Y':
+                return decision("split")
+            elif result["Decision"] == 'N':
+                return decision("do not split")
+            else:
+                return decision("cannot defined")
 
         # if one card is an A
         elif card1 == 'A' or card2 == 'A':
             #execute search in soft table
-            return decision("temp")
+            result = db.execute("SELECT * FROM soft WHERE LeftCard = ? AND RightCard = ? AND DealerCard = ?", card1, card2, dealer)
+            
+            if result["Decision"] == 'S':
+                return decision("stand")
+            elif result["Decision"] == 'Ds':
+                return decision("double if allowed, otherwise stand")
+            elif result["Decision"] == 'H':
+                return decision("hit")
+            elif result ["Decision"] == 'D':
+                return decision("double if allowed, otherwise hit")
+            else:
+                return decision("cannot defined")
+        
         # else
         else:
-            # execute search in hard table
-
             # execute search for what the user should do
             result = db.execute("SELECT ? FROM hard WHERE symbol = ?", dealer, total)
             # if result is hit
-            # redirect to another site with extra input box
+            if result == 'H':
+                return decision("hit")
             # if result is stand 
-            if result=='S':
+            elif result == 'S':
                 #show result page with stand
-                return render_template("/das_incl_main_text.html", result='stand')
-            # if result is double/stand
-                # 
+                return decision("stand")
             # if result is double/hit
-                #
+            elif result == 'D':
+                #show result page with double
+                return decision("double")
+            # if others
+            else:
+                #show result page with cannot defined
+                return decision("cannot defined")
