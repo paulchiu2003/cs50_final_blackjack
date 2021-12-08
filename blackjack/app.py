@@ -45,10 +45,10 @@ def das_excl_main():
 # execute database search for DAS included
 @app.route("/das_incl_submit", methods=["GET", "POST"])
 def das_incl_submit():
-    
+
     # Paul 1208 - POST
     if request.method == "POST":
-    
+
         #save card inputs in variables
         dealer = request.form.get("card_input_dealer")
         card1 = request.form.get("card_input1")
@@ -60,46 +60,46 @@ def das_incl_submit():
 
             # execute search in split table
             result = db.execute("SELECT * FROM split_das WHERE LeftCard = ? AND DealerCard = ?", card1, dealer)
-            
-            if result["Decision"] == 'Y':
+
+            if result[0]["Decision"] == 'Y':
                 return decision("split")
-            elif result["Decision"] == 'N':
+            elif result[0]["Decision"] == 'N':
                 return decision("do not split")
             else:
-                return decision("cannot defined")
+                return decision("cannot defined (split)")
 
         # if one card is an A
         elif card1 == 'A' or card2 == 'A':
             #execute search in soft table
             result = db.execute("SELECT * FROM soft WHERE LeftCard = ? AND RightCard = ? AND DealerCard = ?", card1, card2, dealer)
-            
-            if result["Decision"] == 'S':
+
+            if result[0]["Decision"] == 'S':
                 return decision("stand")
-            elif result["Decision"] == 'Ds':
+            elif result[0]["Decision"] == 'Ds':
                 return decision("double if allowed, otherwise stand")
-            elif result["Decision"] == 'H':
+            elif result[0]["Decision"] == 'H':
                 return decision("hit")
-            elif result ["Decision"] == 'D':
+            elif result[0]["Decision"] == 'D':
                 return decision("double if allowed, otherwise hit")
             else:
-                return decision("cannot defined")
-        
+                return decision("cannot defined (soft)")
+
         # else
         else:
             # execute search for what the user should do
-            result = db.execute("SELECT ? FROM hard WHERE symbol = ?", dealer, total)
+            result = db.execute("SELECT * FROM hard WHERE Symbol = ? AND DealerCared = ?", total, dealer)
             # if result is hit
-            if result == 'H':
+            if result[0]["Decision"] == 'H':
                 return decision("hit")
-            # if result is stand 
-            elif result == 'S':
+            # if result is stand
+            elif result[0]["Decision"] == 'S':
                 #show result page with stand
                 return decision("stand")
             # if result is double/hit
-            elif result == 'D':
+            elif result[0]["Decision"] == 'D':
                 #show result page with double
                 return decision("double")
             # if others
             else:
                 #show result page with cannot defined
-                return decision("cannot defined")
+                return decision("cannot defined (hard)")
