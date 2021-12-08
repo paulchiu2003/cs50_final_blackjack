@@ -6,19 +6,8 @@
         <div class = "center" display = "table">
             <div class = "blackjack_table_words_small">DEALER CARDS</div>
             <br>
-            <select class="card_input">
-                <option value="A">A</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>
+        <form action="/das_incl_submit" method="post">
+            <input type="text" class="card_input" name= "card_input_dealer">
             <br>
             <br>
             <div class = "blackjack_table_words_small">PLAYER CARDS</div>
@@ -31,7 +20,7 @@
             <br>
             <div class = "center" display = "table">
                 <!--<a href=das_incl_submit><input class="selectbox" type= submit ></button></a>-->
-                <a href=das_incl_main.html><button class = "selectbox">Restart</button></a>
+                <a href=das_incl_main><button class = "selectbox">Restart</button></a>
             </div>
 
     </body>
