@@ -3,7 +3,7 @@ import os
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
-from helpers import decision
+from helpers import decision, hit, stand, double, dontsplit, split
 
 # Configure application
 app = Flask(__name__)
@@ -60,7 +60,7 @@ def das_incl_submit():
             # execute search in split table
             result = db.execute("SELECT * FROM split_das WHERE LeftCard = ? AND DealerCard = ?", card1, dealer)
             if result[0]["Decision"] == 'Y':
-                return decision("split")
+                return split("split")
             elif result[0]["Decision"] == 'N':
                 # the decision will be not split, but need to further check what to do next
                 # set two texts become integers first and add sum up them
@@ -70,22 +70,22 @@ def das_incl_submit():
                 # if the total is larger than 17, which I forgot to put these scenarios in SQL
                 if total > 17:
                     # show result page with do not split, but stand
-                    return decision("do not split, but stand")
+                    return dontsplit("do not split, but stand")
                 else:
                     # execute search for what the user should do
                     result = db.execute("SELECT * FROM hard WHERE Symbol = ? AND DealerCard = ?", total_text, dealer)
                     # if result is hit
                     if result[0]["Decision"] == 'H':
                         # show result page with do not split, but hit
-                        return decision("do not split, but hit")
+                        return dontsplit("do not split, but hit")
                     # if result is stand
                     elif result[0]["Decision"] == 'S':
                         # # show result page with do not split, but stand
-                        return decision("do not split, but stand")
+                        return dontsplit("do not split, but stand")
                     # if result is double/hit
                     elif result[0]["Decision"] == 'D':
                         # show result page with do not split, but double
-                        return decision("do not split, but double")
+                        return dontsplit("do not split, but double")
                     # if others
                     else:
                         # show result page with cannot defined
@@ -99,13 +99,13 @@ def das_incl_submit():
             result = db.execute("SELECT * FROM soft WHERE LeftCard = ? AND RightCard = ? AND DealerCard = ?", card1, card2, dealer)
 
             if result[0]["Decision"] == 'S':
-                return decision("stand")
+                return stand("stand")
             elif result[0]["Decision"] == 'Ds':
-                return decision("double if allowed, otherwise stand")
+                return double("double if allowed, otherwise stand")
             elif result[0]["Decision"] == 'H':
-                return decision("hit")
+                return hit("hit")
             elif result[0]["Decision"] == 'D':
-                return decision("double if allowed, otherwise hit")
+                return double("double if allowed, otherwise hit")
             else:
                 return decision("cannot defined (soft)")
 
@@ -118,21 +118,21 @@ def das_incl_submit():
             # if the total is larger than 17, which I forgot to put these scenarios in SQL
             if total > 17:
                 # show result page with stand
-                return decision("stand")
+                return stand("stand")
             else:
                 # execute search for what the user should do
                 result = db.execute("SELECT * FROM hard WHERE Symbol = ? AND DealerCard = ?", total_text, dealer)
                 # if result is hit
                 if result[0]["Decision"] == 'H':
-                    return decision("hit")
+                    return hit("hit")
                 # if result is stand
                 elif result[0]["Decision"] == 'S':
                     # show result page with stand
-                    return decision("stand")
+                    return stand("stand")
                 # if result is double/hit
                 elif result[0]["Decision"] == 'D':
                     # show result page with double
-                    return decision("double")
+                    return double("double")
                 # if others
                 else:
                     # show result page with cannot defined

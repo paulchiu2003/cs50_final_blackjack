@@ -21,45 +21,76 @@ def decision(message, code=400):
     return render_template("decision.html", top=code, bottom=escape(message)), code
 
 
-def login_required(f):
-    """
-    Decorate routes to require login.
+def hit(message, code=400):
+    """Render message as an apology to user."""
+    def escape(s):
+        """
+        Escape special characters.
 
-    http://flask.pocoo.org/docs/0.12/patterns/viewdecorators/
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
-        return f(*args, **kwargs)
-    return decorated_function
-
-
-def lookup(symbol):
-    """Look up quote for symbol."""
-
-    # Contact API
-    try:
-        api_key = os.environ.get("API_KEY")
-        response = requests.get(f"https://cloud.iexapis.com/stable/stock/{urllib.parse.quote_plus(symbol)}/quote?token={api_key}")
-        response.raise_for_status()
-    except requests.RequestException as e:
-        print(e)
-        return None
-
-    # Parse response
-    try:
-        quote = response.json()
-        return {
-            "name": quote["companyName"],
-            "price": float(quote["latestPrice"]),
-            "symbol": quote["symbol"]
-        }
-    except (KeyError, TypeError, ValueError) as e:
-        print(e)
-        return None
+        https://github.com/jacebrowning/memegen#special-characters
+        """
+        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+            s = s.replace(old, new)
+        return s
+    return render_template("decision_hit.html", top=code, bottom=escape(message)), code
 
 
-def usd(value):
-    """Format value as USD."""
-    return f"${value:,.2f}"
+def stand(message, code=400):
+    """Render message as an apology to user."""
+    def escape(s):
+        """
+        Escape special characters.
+
+        https://github.com/jacebrowning/memegen#special-characters
+        """
+        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+            s = s.replace(old, new)
+        return s
+    return render_template("decision_stand.html", top=code, bottom=escape(message)), code
+
+
+def double(message, code=400):
+    """Render message as an apology to user."""
+    def escape(s):
+        """
+        Escape special characters.
+
+        https://github.com/jacebrowning/memegen#special-characters
+        """
+        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+            s = s.replace(old, new)
+        return s
+    return render_template("decision_double.html", top=code, bottom=escape(message)), code
+
+
+def dontsplit(message, code=400):
+    """Render message as an apology to user."""
+    def escape(s):
+        """
+        Escape special characters.
+
+        https://github.com/jacebrowning/memegen#special-characters
+        """
+        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+            s = s.replace(old, new)
+        return s
+    return render_template("decision_dontsplit.html", top=code, bottom=escape(message)), code
+
+
+def split(message, code=400):
+    """Render message as an apology to user."""
+    def escape(s):
+        """
+        Escape special characters.
+
+        https://github.com/jacebrowning/memegen#special-characters
+        """
+        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+            s = s.replace(old, new)
+        return s
+    return render_template("decision_split.html", top=code, bottom=escape(message)), code
